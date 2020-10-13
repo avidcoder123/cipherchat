@@ -5,3 +5,4 @@ channels-redis
 django-heroku
 daphne
 redis
+psycopg2
