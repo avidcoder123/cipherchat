@@ -17,7 +17,7 @@ Or you can use [Its Docker Image](https://hub.docker.com/_/redis) with:
 Windows is more difficult, since Redis does not have direct support for Windows. Since I developed this on a Windows machine, I used a Redis alternative, [Memurai](https://www.memurai.com).
 
 After you install Redis/Memurai, you must run Redis on port 6379 with:  
-`redis-server`
+`redis-server`  
 On Windows, you can go to Task Manager, go to Services, and activate Memurai.
 The you can run CipherChat as you would with any Django application, with  
 `python manage.py runserver`
