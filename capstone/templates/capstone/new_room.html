@@ -1,0 +1,19 @@
+{% extends "capstone/layout.html" %}
+{% block body %}
+<h1>Create New Room</h1>
+{% if message %}
+    {{message}}
+{% endif %}
+<form>
+<h2> Room Title </h2>
+<input type="text" class="form-control" id="form_title" required></input>
+<hr>
+<h2> Room Description </h2>
+<textarea type="text" class="form-control" id="form_description" rows="3" required></textarea>
+<hr>
+<h2> Room Members(Seperate users with commas) </h2>
+<input type="text" class="form-control" id="form_members" required></input>
+<hr>
+<button id="submit" class="btn btn-primary" type="button">Create group</button>
+</form>
+{% endblock %}

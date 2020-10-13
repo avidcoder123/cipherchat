@@ -1,0 +1,27 @@
+{% extends "capstone/layout.html" %}
+{% block body %}
+<h1>{{title}}</h1>
+<hr>
+<h3><i>{{description}}</i></h3>
+<hr>
+<h3>Members:</h3>
+<div id="members">
+{% for member in members %}
+    <a href="#" class="list-group-item list-group-item-action">{{member}}</a>
+{% endfor %}
+{% if host %}
+<script>
+    var id = {{id}}
+</script>
+<form>
+<h3>Send invitations to users below(seperate multiple users with commas)</h3>
+<input type="text" class="form-control" id="invites" required>
+<button type="button" class="btn btn-primary" id="invite">Send Invites</button>
+</form>
+{% endif %}
+</div>
+<hr>
+<a href="/chat/{{id}}"><button class="btn btn-success">Connect to Chatroom</button></a>
+<hr>
+<button class="btn btn-danger" id="leave">Leave Group</button>
+{% endblock %}

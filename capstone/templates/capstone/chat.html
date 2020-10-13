@@ -1,0 +1,30 @@
+{% extends "capstone/layout.html" %}
+{% block body %}
+<div id="body">
+{% if messages %}
+{% for message in messages %}
+{% if message.sender == request.user.username%}
+<div class="alert alert-success" role="alert">
+  <a href="/profile/{{message.sender}}">@{{message.sender}}</a><hr>
+  <h5 class="card-title" data-contents="{{message.body}}" data-decrypted="false">Decrypting...</h5>
+  Sent {{message.timestamp}}
+</div>
+{% else %}
+<div class="alert alert-dark" role="alert">
+  <a href="/profile/{{message.sender}}">@{{message.sender}}</a><hr>
+  <h5 data-contents="{{message.body}}" data-decrypted="false">Decrypting...</h5>
+  Sent {{message.timestamp}} UTC
+</div>
+{%  endif %}
+{% endfor %}
+{% else %}
+<h2 id="emptymessage">This Chatroom has no messages.</h2>
+{% endif %}
+</div>
+<hr>
+<div class="container">
+
+<input class="form-control" placeholder="Type a Message" type="text" id="message" required><button hidden="true" id="send">Send</button>
+
+</div>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "capstone/layout.html" %}
+{% block body %}
+<h1>Your Room Invites</h1>
+<hr>
+{% if invites %}
+{% for invite in invites %}
+<div class="alert alert-info" role="alert" id="{{invite.id}}">
+  You have been invited to "{{invite.name}}"! <span text-align="right"><button class="btn btn-primary accept" onclick="accept({{invite.id}},{{invite.pk}})">Accept</button></span>
+</div>
+{% endfor %}
+{% else %}
+<h2>No Room Invites Yet!</h2>
+{% endif %}
+{% endblock %}

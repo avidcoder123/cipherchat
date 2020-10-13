@@ -1,0 +1,19 @@
+{% extends "capstone/layout.html" %}
+{% block body %}
+<h1>{{thisuser.username}}'s Profile</h1>
+<hr>
+<h2>Status:</h2>
+{% if status%}
+<i>{{status.status}}</i>
+{% else %}
+<i>This user currently has no status.</i>
+{% endif %}
+{% if thisuser == request.user %}
+<hr>
+<form action="/profile/set" method="POST">
+    {% csrf_token %}
+    <h6>Change status:</h6>
+    <input class="form-control" name="status" placeholder="Enter new status" required>
+</form>
+{% endif %}
+{% endblock %}
