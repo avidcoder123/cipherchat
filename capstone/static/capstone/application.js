@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const fingerprint = localStorage.getItem('fingerprint');
         const privatekey = cryptico.generateRSAKey(fingerprint, 1024);
         var chatSocket = new WebSocket(
-            'ws://'
+            'wss://'
             + window.location.host
             + '/ws/chat/'
             + path[2]
