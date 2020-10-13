@@ -2,3 +2,4 @@ django
 channels
 asgi-redis
 channels-redis
+django-heroku
