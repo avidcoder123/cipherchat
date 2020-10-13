@@ -94,6 +94,7 @@ DATABASES = {
         'PASSWORD': os.environ.get("dbpass"),
         'HOST': os.environ.get("dbhost"),
         'PORT': os.environ.get("dbport")
+     }
 }
 AUTH_USER_MODEL = "capstone.User"
 
