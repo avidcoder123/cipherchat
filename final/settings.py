@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+import django_heroku
 from django.core.management.utils import get_random_secret_key
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -131,3 +132,4 @@ USE_TZ = True
 STATIC_URL = '/static/capstone/'
 
 LOGIN_URL = '/login'
+django_heroku.settings(locals())
