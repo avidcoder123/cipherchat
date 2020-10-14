@@ -7,13 +7,8 @@ import json
 from django.db import IntegrityError
 from .models import User, Room, Invite, Message, PublicKey, Status
 from django.db import close_old_connections
+from .util import manageconnections
 # Create your views here.
-def manageconnections(func):
-    def wrapper(*args,**kwargs):
-        close_old_connections()
-        func(*args,**kwargs)
-        close_old_connections()
-    return wrapper
 @manageconnections
 @login_required
 def index(request):
