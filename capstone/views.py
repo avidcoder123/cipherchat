@@ -7,11 +7,11 @@ import json
 from django.db import IntegrityError
 from .models import User, Room, Invite, Message, PublicKey, Status
 from django.db import close_old_connections
-from .util import manageconnections
+
 # Create your views here.
-@manageconnections
 @login_required
 def index(request):
+    close_old_connections()
     currentuser = User.objects.get(pk = request.user.id)
     raw_invites = Invite.objects.filter(recipient = currentuser)
     text_invites = []
@@ -26,8 +26,9 @@ def index(request):
         "invites": text_invites
     })
 
-@manageconnections
+
 def login_view(request):
+    close_old_connections()
     if request.method == "POST":
 
         # Attempt to sign user in
@@ -46,13 +47,14 @@ def login_view(request):
     else:
         return render(request, "capstone/login.html")
 
-@manageconnections
+
 def logout_view(request):
+    close_old_connections()
     logout(request)
     return HttpResponseRedirect(reverse("index"))
 
-@manageconnections
 def register(request):
+    close_old_connections()
     if request.method == "POST":
         username = request.POST["username"]
         email = request.POST["email"]
@@ -80,9 +82,10 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "capstone/register.html")
-@manageconnections
+
 @login_required
 def new_room(request):
+    close_old_connections()
     request.session["rooms"] = []
     allrooms = Room.objects.all()
     for room in allrooms:
@@ -119,9 +122,10 @@ def new_room(request):
             })
     else:
         return render(request, "capstone/new_room.html")
-@manageconnections
+
 @login_required
 def room(request, id):
+    close_old_connections()
     request.session["rooms"] = []
     allrooms = Room.objects.all()
     for room in allrooms:
@@ -142,9 +146,10 @@ def room(request, id):
         "host": host,
         "id": room.id
     })
-@manageconnections
+
 @login_required
 def leave(request, id):
+    close_old_connections()
     request.session["rooms"] = []
     allrooms = Room.objects.all()
     for room in allrooms:
@@ -162,9 +167,10 @@ def leave(request, id):
             return JsonResponse({
                 "message":"You are not a member of that room."
             })
-@manageconnections
+
 @login_required
 def invite(request):
+    close_old_connections()
     if request.method == "POST":
         data = json.loads(request.body)
         room = Room.objects.get(id = data.get("room"))
@@ -192,8 +198,9 @@ def invite(request):
         })
     else:
         return HttpResponseRedirect(reverse("index"))
-@manageconnections
+
 def accept(request):
+    close_old_connections()
     if request.method == "POST":
         data = json.loads(request.body)
         invite_room = Room.objects.get(pk = data.get("id"))
@@ -205,8 +212,9 @@ def accept(request):
         return JsonResponse({
             "message":"Success!"
         })
-@manageconnections
+
 def chat(request, id):
+    close_old_connections()
     request.session["rooms"] = []
     allrooms = Room.objects.all()
     for room in allrooms:
@@ -221,8 +229,9 @@ def chat(request, id):
     return render(request, "capstone/chat.html",{
         "messages": all_messages
     })
-@manageconnections
+
 def ajax(request, slug):
+    close_old_connections()
     if request.method == "POST":
         data = json.loads(request.body)
         if slug == "roomdata":
@@ -254,9 +263,10 @@ def ajax(request, slug):
             })
     else:
         HttpResponseRedirect(reverse("index"))
-@manageconnections
+
 @login_required
 def profile(request,user):
+    close_old_connections()
     if request.method == "POST":
         newstatus = request.POST["status"]
         print(newstatus)
