@@ -9,9 +9,9 @@ from .models import User, Room, Invite, Message, PublicKey, Status
 from django.db import close_old_connections
 # Create your views here.
 def manageconnections(func):
-    def wrapper():
+    def wrapper(*args,**kwargs):
         close_old_connections()
-        func()
+        func(*args,**kwargs)
         close_old_connections()
     return wrapper
 @manageconnections
