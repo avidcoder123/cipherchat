@@ -6,7 +6,15 @@ from django.contrib.auth.decorators import login_required
 import json
 from django.db import IntegrityError
 from .models import User, Room, Invite, Message, PublicKey, Status
+from django.db import close_old_connections
 # Create your views here.
+def manageconnections(func):
+    def wrapper():
+        close_old_connections()
+        func()
+        close_old_connections()
+    return wrapper
+@manageconnections
 @login_required
 def index(request):
     currentuser = User.objects.get(pk = request.user.id)
@@ -23,7 +31,7 @@ def index(request):
         "invites": text_invites
     })
 
-
+@manageconnections
 def login_view(request):
     if request.method == "POST":
 
@@ -43,12 +51,12 @@ def login_view(request):
     else:
         return render(request, "capstone/login.html")
 
-
+@manageconnections
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("index"))
 
-
+@manageconnections
 def register(request):
     if request.method == "POST":
         username = request.POST["username"]
@@ -77,6 +85,7 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "capstone/register.html")
+@manageconnections
 @login_required
 def new_room(request):
     request.session["rooms"] = []
@@ -115,6 +124,7 @@ def new_room(request):
             })
     else:
         return render(request, "capstone/new_room.html")
+@manageconnections
 @login_required
 def room(request, id):
     request.session["rooms"] = []
@@ -137,6 +147,7 @@ def room(request, id):
         "host": host,
         "id": room.id
     })
+@manageconnections
 @login_required
 def leave(request, id):
     request.session["rooms"] = []
@@ -156,6 +167,7 @@ def leave(request, id):
             return JsonResponse({
                 "message":"You are not a member of that room."
             })
+@manageconnections
 @login_required
 def invite(request):
     if request.method == "POST":
@@ -185,6 +197,7 @@ def invite(request):
         })
     else:
         return HttpResponseRedirect(reverse("index"))
+@manageconnections
 def accept(request):
     if request.method == "POST":
         data = json.loads(request.body)
@@ -197,6 +210,7 @@ def accept(request):
         return JsonResponse({
             "message":"Success!"
         })
+@manageconnections
 def chat(request, id):
     request.session["rooms"] = []
     allrooms = Room.objects.all()
@@ -212,6 +226,7 @@ def chat(request, id):
     return render(request, "capstone/chat.html",{
         "messages": all_messages
     })
+@manageconnections
 def ajax(request, slug):
     if request.method == "POST":
         data = json.loads(request.body)
@@ -244,6 +259,7 @@ def ajax(request, slug):
             })
     else:
         HttpResponseRedirect(reverse("index"))
+@manageconnections
 @login_required
 def profile(request,user):
     if request.method == "POST":
