@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if(data.recipient == currentuser) {
                 let message=`<div class="alert alert-${currentuser === data.sender ? "success":"dark"}" role="alert">\
                 <a href="/profile/${data.sender}">@${data.sender}</a><hr>\
-                <h5>${escapeOutput(cryptico.decrypt(data.body,privatekey).plaintext)}</h5>\
+                <h5>${linkify(escapeOutput(cryptico.decrypt(data.body,privatekey).plaintext))}</h5>\
                 Sent Recently\
               </div>`
                 document.querySelector('#body').innerHTML+=message;
@@ -115,9 +115,9 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('[data-decrypted = "false"]').forEach(e => {
             let decrypted = cryptico.decrypt(e.dataset.contents, privatekey);
             if(decrypted.signature == "verified") {
-                e.innerHTML = decrypted.plaintext;
+                e.innerHTML = linkify(decrypted.plaintext);
             } else {
-                e.innerHTML = `<b>WARNING: This message may have been intercepted or sent by a hacker because it does not have a valid signature.</b><br>${decrypted.plaintext}`
+                e.innerHTML = `<b>WARNING: This message may have been intercepted or sent by a hacker because it does not have a valid signature.</b><br>${linkify(decrypted.plaintext)}`
             }
             e.hidden = false
             e.dataset.decrypted = "true"
@@ -243,4 +243,10 @@ function escapeOutput(toOutput){
         .replace(/\>/g, '&gt;')
         .replace(/\"/g, '&quot;')
         .replace(/\%/g, '(percent)')
+}
+function linkify(text) {
+    var urlRegex =/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+    return text.replace(urlRegex, function(url) {
+        return '<a href="' + url + '">' + url + '</a>';
+    });
 }
