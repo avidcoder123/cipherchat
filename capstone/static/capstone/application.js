@@ -82,11 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 Sent Recently\
               </div>`
                 document.querySelector('#body').innerHTML+=message;
-                try{
-                 document.querySelector('#emptymessage').innerHTML="";
-                }finally{
-                    return null;
-            }
+                document.querySelector('#emptymessage').innerHTML="";
         };
         chatSocket.onclose = function(e) {
             console.error('Chat socket closed unexpectedly');
