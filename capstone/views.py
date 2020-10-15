@@ -258,6 +258,7 @@ def ajax(request, slug):
             body = data.get("body")
             message = Message.objects.create(room_data = room, sender = sender, receiver = receiver, body = body)
             message.save()
+            all_messages = Message.objects.filter(room_data=room).order_by("-timestamp")
             return JsonResponse({
                 "message":"Success!"
             })
