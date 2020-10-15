@@ -78,11 +78,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if(data.recipient == currentuser) {
                 let message=`<div class="alert alert-${currentuser === data.sender ? "success":"dark"}" role="alert">\
                 <a href="/profile/${data.sender}">@${data.sender}</a><hr>\
-                <h5>${linkify(escapeOutput(cryptico.decrypt(data.body,privatekey).plaintext))}</h5>\
+                <h5>${escapeOutput(cryptico.decrypt(data.body,privatekey).plaintext)}</h5>\
                 Sent Recently\
               </div>`
                 document.querySelector('#body').innerHTML+=message;
                 document.querySelector('#emptymessage').innerHTML="";
+            }
         };
         chatSocket.onclose = function(e) {
             console.error('Chat socket closed unexpectedly');
@@ -90,9 +91,9 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('[data-decrypted = "false"]').forEach(e => {
             let decrypted = cryptico.decrypt(e.dataset.contents, privatekey);
             if(decrypted.signature == "verified") {
-                e.innerHTML = linkify(decrypted.plaintext);
+                e.innerHTML = decrypted.plaintext;
             } else {
-                e.innerHTML = `<b>WARNING: This message may have been intercepted or sent by a hacker because it does not have a valid signature.</b><br>${linkify(decrypted.plaintext)}`
+                e.innerHTML = `<b>WARNING: This message may have been intercepted or sent by a hacker because it does not have a valid signature.</b><br>${decrypted.plaintext}`
             }
             e.hidden = false
             e.dataset.decrypted = "true"
@@ -165,8 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 return false;
             })
         }
-        }
-    }else if (path[1] == 'login') {
+    } else if (path[1] == 'login') {
         document.querySelector('#login').onsubmit = () => {
             //Gets username and password and hashes them together to make a user firgerprint, later used for generating RSA keys.
             let username = document.querySelector('#username').value;
@@ -217,10 +217,5 @@ function escapeOutput(toOutput){
     return toOutput.replace(/\&/g, '&amp;')
         .replace(/\</g, '&lt;')
         .replace(/\>/g, '&gt;')
-}
-function linkify(text) {
-    var urlRegex =/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
-    return text.replace(urlRegex, function(url) {
-        return '<a href="' + url + '">' + url + '</a>';
-    });
+        .replace(/\"/g, '&quot;')
 }
