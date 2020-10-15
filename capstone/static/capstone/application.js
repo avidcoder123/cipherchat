@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         var notification = new Notification(`${data.sender} says: ${cryptico.decrypt(data.body,privatekey).plaintext}`);
                       }
                     });
-  }
+                }         
             }
             if(data.recipient == currentuser) {
                 let message=`<div class="alert alert-${currentuser === data.sender ? "success":"dark"}" role="alert">\
@@ -190,7 +190,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 return false;
             })
         }
-    } else if (path[1] == 'login') {
+    } 
+    }else if (path[1] == 'login') {
         document.querySelector('#login').onsubmit = () => {
             //Gets username and password and hashes them together to make a user firgerprint, later used for generating RSA keys.
             let username = document.querySelector('#username').value;
