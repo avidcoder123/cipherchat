@@ -220,5 +220,4 @@ function escapeOutput(toOutput){
         .replace(/\"/g, '&quot;')
         .replace(/\'/g, '&#x27')
         .replace(/\%/g, '(percent)')
-        .replace(/\//g, '&#x2F')
 }
