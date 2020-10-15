@@ -107,6 +107,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         document.querySelector('#send').onclick = function(e) {
             var message = document.querySelector('#message').value;
+            if (!message){
+                return false;
+            }
             let users = []
             const request = new Request(
                 '/ajax/roomdata',
