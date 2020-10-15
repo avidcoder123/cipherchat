@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.querySelector('#body').innerHTML+=message;
                 try{
                  document.querySelector('#emptymessage').innerHTML="";
-                }except{
+                }finally{
                     null
             }
         };
