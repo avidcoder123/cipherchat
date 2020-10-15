@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 try{
                  document.querySelector('#emptymessage').innerHTML="";
                 }finally{
-                    null
+                    return null;
             }
         };
         chatSocket.onclose = function(e) {
