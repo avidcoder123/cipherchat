@@ -241,8 +241,6 @@ function escapeOutput(toOutput){
     return toOutput.replace(/\&/g, '&amp;')
         .replace(/\</g, '&lt;')
         .replace(/\>/g, '&gt;')
-        .replace(/\"/g, '&quot;')
-        .replace(/\%/g, '(percent)')
 }
 function linkify(text) {
     var urlRegex =/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
