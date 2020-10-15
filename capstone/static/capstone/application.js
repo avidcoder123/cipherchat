@@ -103,7 +103,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 Sent Recently\
               </div>`
                 document.querySelector('#body').innerHTML+=message;
-                document.querySelector('#emptymessage').innerHTML="";
+                try{
+                 document.querySelector('#emptymessage').innerHTML="";
+                }except{
+                    null
             }
         };
         chatSocket.onclose = function(e) {
