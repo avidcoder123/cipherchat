@@ -146,22 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 "body": cipher.cipher,
                                 "recipient": user,
                             })
-                            }));
-                        const request = new Request(
-                            '/ajax/sendmessage',
-                            {headers: {'X-CSRFToken': csrf}}
-                        );
-                        fetch(request, {
-                            method:"POST",
-                            body: JSON.stringify({
-                                "roomid":path[2],
-                                "publickey": result.key,
-                                "body": cipher.cipher,
-                                "sender": document.querySelector('#currentuser').innerHTML
-                            })
-                        })
-                        document.querySelector('#message').value = '';
-                    })
+                            }))
                 }
                 return false;
             })
