@@ -249,19 +249,6 @@ def ajax(request, slug):
             return JsonResponse({
                 "key": key.publickey
             })
-        elif slug == "sendmessage":
-            room = Room.objects.get(pk = data.get("roomid"))
-            receiver = PublicKey.objects.get(publickey = data.get("publickey"))
-            receiver = receiver.user
-            print(data.get("sender"))
-            sender = User.objects.get(pk = data.get("sender"))
-            body = data.get("body")
-            message = Message.objects.create(room_data = room, sender = sender, receiver = receiver, body = body)
-            message.save()
-            all_messages = Message.objects.filter(room_data=room).order_by("-timestamp")
-            return JsonResponse({
-                "message":"Success!"
-            })
     else:
         HttpResponseRedirect(reverse("index"))
 
