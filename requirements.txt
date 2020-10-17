@@ -7,4 +7,3 @@ daphne
 redis
 psycopg2
 uvicorn
-gunicorn
