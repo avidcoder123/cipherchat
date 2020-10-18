@@ -3,8 +3,8 @@
 <script>
 window.users = []
 {% for thisuser in user_data %}
-window.users.push({"{{thisuser.user.username}}": {{thisuser.publickey}} }
-  {% endif %}
+window.users.push({user: "{{thisuser.user.username}}", key: "{{thisuser.publickey}}" })
+  {% endfor %}
 </script>
 <div id="body">
 {% if messages %}
