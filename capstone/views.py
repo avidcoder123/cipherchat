@@ -226,8 +226,12 @@ def chat(request, id):
     all_messages=[]
     for message in raw_allmessages:
         all_messages.append(message.serialize())
+    user_data = []
+    for person in thisroom.members.all():
+        user_data.append(person)
     return render(request, "capstone/chat.html",{
-        "messages": all_messages
+        "messages": all_messages,
+        "user_data": user_data
     })
 
 def ajax(request, slug):
