@@ -149,6 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             }))
                     })
                 }
+                document.querySelector("#message").value = "";
                 return false;
             })
         }
