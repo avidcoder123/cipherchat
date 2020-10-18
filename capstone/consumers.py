@@ -35,7 +35,7 @@ class ChatConsumer(WebsocketConsumer):
         body=message['body']
         newmessage = Message.objects.create(room_data = room, sender = sender, receiver = receiver, body = body)
         newmessage.save()
-        message['timestamp'] = newmessage.timestamp
+        message['timestamp'] = str(newmessage.timestamp)
         message=json.dumps(message)
         # Send message to room group
         async_to_sync(self.channel_layer.group_send)(
