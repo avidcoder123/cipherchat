@@ -110,48 +110,19 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!message){
                 return false;
             }
-            let users = []
-            const request = new Request(
-                '/ajax/roomdata',
-                {headers: {'X-CSRFToken': csrf}}
-            );
-            fetch(request, {
-                "method": "POST",
-                "body": JSON.stringify({
-                    "roomid": path[2]
-                })
-            })
-            .then(response => response.json())
-            .then(result => {
-                for(member in result.members) {
-                    let user = result.members[member]
-                    const request = new Request(
-                        '/ajax/getkey',
-                        {headers: {'X-CSRFToken': csrf}}
-                    )
-                    fetch(request, {
-                        "method": "POST",
-                        "body": JSON.stringify({
-                            "user": user
-                        })
-                    })
-                    .then(response => response.json())
-                    .then(result => {
-                        const cipher = cryptico.encrypt(message,result.key,privatekey)
-                        chatSocket.send(JSON.stringify({
-                            "message":JSON.stringify({
-                                "roomid": path[2],
-                                "publickey": result.key,
-                                "sender": currentuser,
-                                "body": cipher.cipher,
-                                "recipient": user,
-                            })
-                            }))
-                    })
-                }
-                document.querySelector("#message").value = "";
-                return false;
-            })
+            for(user in window.users){
+                const cipher = cryptico.encrypt(message,user.key,privatekey)
+                chatSocket.send(JSON.stringify({
+                     "message":JSON.stringify({
+                     "roomid": path[2],
+                      "publickey": user.key,
+                      "sender": currentuser,
+                     "body": cipher.cipher,
+                      "recipient": user.user,
+               })
+            }))
+            }
+            document.querySelector("#message").value = "";
         }
     } else if (path[1] == 'login') {
         document.querySelector('#login').onsubmit = () => {
