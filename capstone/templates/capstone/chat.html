@@ -1,5 +1,11 @@
 {% extends "capstone/layout.html" %}
 {% block body %}
+<script>
+window.users = []
+{% for thisuser in user_data %}
+window.users["{{thisuser.user.username}}"] = {{thisuser.publickey}}
+  {% endif %}
+</script>
 <div id="body">
 {% if messages %}
 {% for message in messages %}
