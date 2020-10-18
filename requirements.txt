@@ -6,5 +6,3 @@ django-heroku
 daphne
 redis
 psycopg2
-uvicorn
-gunicorn
