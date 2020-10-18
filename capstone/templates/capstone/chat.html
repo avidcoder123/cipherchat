@@ -3,7 +3,7 @@
 <script>
 window.users = []
 {% for thisuser in user_data %}
-window.users["{{thisuser.user.username}}"] = {{thisuser.publickey}}
+window.users.push({"{{thisuser.user.username}}": {{thisuser.publickey}} }
   {% endif %}
 </script>
 <div id="body">
