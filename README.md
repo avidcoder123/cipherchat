@@ -20,6 +20,8 @@ After you install Redis/Memurai, you must run Redis on port 6379 with:
 `redis-server`  
 On Windows, you can go to Task Manager, go to Services, and activate Memurai.
 The you can run CipherChat as you would with any Django application, with  
-`python manage.py runserver`
+`python manage.py runserver`  
+##How to use
+Want to use CipherChat to chat with others? Visit [the website](http://rsa-cipherchat.herokuapp.com), download for Desktop [on GitHub releases](https://github.com/thomcatmeow/cipherchat/releases) or download from [Google Drive](https://drive.google.com/drive/folders/1mOhxkpwFtzxTf4frSUmRVFBKl_ojqasw).
 
 
