@@ -112,6 +112,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!message){
                 return false;
             }
+            let message2=`<div class="alert alert-success" role="alert">\
+                <a href="/profile/${currentuser}">@${currentuser}</a><hr>\
+                <h5>${escapeOutput(message)}</h5>\
+                ${new Date()}\
+              </div>`
+                document.querySelector('#body').innerHTML+=message2;
             for(user in window.users){
                 const cipher = cryptico.encrypt(message,user.key,privatekey)
                 chatSocket.send(JSON.stringify({
@@ -179,6 +185,7 @@ function escapeOutput(toOutput){
         .replace(/\"/g, '&quot;')
 }
 function notify(message) {
+  if(document.hidden){
   // Let's check if the browser supports notifications
   if (!("Notification" in window)) {
     alert("This browser does not support desktop notification");
@@ -202,4 +209,5 @@ function notify(message) {
 
   // At last, if the user has denied notifications, and you 
   // want to be respectful there is no need to bother them any more.
+}
 }
