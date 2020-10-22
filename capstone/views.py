@@ -212,7 +212,7 @@ def accept(request):
         return JsonResponse({
             "message":"Success!"
         })
-
+@login_required
 def chat(request, id):
     close_old_connections()
     request.session["rooms"] = []
