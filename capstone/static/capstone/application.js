@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
             window.scrollTo(0, document.body.scrollHeight || document.documentElement.scrollHeight);
             let data = JSON.parse(e.data);
             data = JSON.parse(data.message);
-            if(data.recipient == currentuser) {
+            if(data.recipient == currentuser && data.sender != currentuser) {
                 let message=`<div class="alert alert-${currentuser === data.sender ? "success":"dark"}" role="alert">\
                 <a href="/profile/${data.sender}">@${data.sender}</a><hr>\
                 <h5>${escapeOutput(cryptico.decrypt(data.body,privatekey).plaintext)}</h5>\
