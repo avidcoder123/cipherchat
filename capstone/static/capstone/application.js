@@ -107,6 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         document.querySelector('#send').onclick = function(e) {
             var message = escapeOutput(document.querySelector('#message').value);
+            document.querySelector("#message").value = "";
             if (!message){
                 return false;
             }
@@ -122,7 +123,6 @@ document.addEventListener('DOMContentLoaded', () => {
                })
             }))
             }
-            document.querySelector("#message").value = "";
         }
     } else if (path[1] == 'login') {
         document.querySelector('#login').onsubmit = () => {
