@@ -22,6 +22,7 @@ On Windows, you can go to Task Manager, go to Services, and activate Memurai.
 The you can run CipherChat as you would with any Django application, with  
 `python manage.py runserver`  
 ## How to use
-Want to use CipherChat to chat with others? Visit [the website](http://rsa-cipherchat.herokuapp.com), download for Desktop [on GitHub releases](https://github.com/thomcatmeow/cipherchat/releases) or download from [Google Drive](https://drive.google.com/drive/folders/1mOhxkpwFtzxTf4frSUmRVFBKl_ojqasw).
-
-
+Want to use CipherChat to chat with others? Visit [the website](http://rsa-cipherchat.herokuapp.com), download for Desktop [on GitHub releases](https://github.com/thomcatmeow/cipherchat/releases) or download from [Google Drive](https://drive.google.com/drive/folders/1mOhxkpwFtzxTf4frSUmRVFBKl_ojqasw).  
+## Planned updates:
+### Cipherchat v1.1
+Cipherchat 1.1 will vastly speed up the chatting experience in CipherChat by removing all AJAX from messages and transferring messages with pure WebSocket. This will speed up CipherChat in browsers such as Opera where AJAX can sometimes be unpredictable. The update will also introduce basic Desktop Notifications, where you will be notified of messages in your room when you are not on that tab.
