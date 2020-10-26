@@ -141,4 +141,7 @@ STATIC_URL = '/static/capstone/'
 
 LOGIN_URL = '/login'
 django_heroku.settings(locals())
-del DATABASES['default']['OPTIONS']['sslmode']
+try:
+    del DATABASES['default']['OPTIONS']['sslmode']
+except:
+    print("Could not delete sslmode")
