@@ -120,6 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.querySelector('#body').innerHTML+=message2;
             console.log(window.users);
             for(user in window.users){
+                console.log(user);
                 console.log(user.key);
                 const cipher = cryptico.encrypt(message,user.key,privatekey)
                 console.log(cipher.cipher);
