@@ -26,9 +26,9 @@ Want to use CipherChat to chat with others? Visit [the website](http://rsa-ciphe
 ## Planned updates and Update Log:
 ### CipherChat Pre-Release
 This was the old version of CipherChat that was built to only work locally. It did not have support for production servers and ran on SQLite.
-### CipherChat v1.0 (Latest)
+### CipherChat v1.0
 CipherChat v1.0 was the official release of CipherChat, with slight speed boosts from CipherChat Pre-Release as well as a database migration from SQLite to PostgreSQL. PgBouncer was also added to prevent the app from crashing from poor Daphne database connection management.
-### Cipherchat v1.1 (In Beta)
+### Cipherchat v1.1 (Latest, Released Nov 8)
 Cipherchat 1.1 will vastly speed up the chatting experience in CipherChat by removing all AJAX from messages and transferring messages with pure WebSocket. This will speed up CipherChat in browsers such as Opera where AJAX can sometimes be unpredictable. The update will also introduce basic Desktop Notifications, where you will be notified of messages in your room when you are not on that tab. Until this massive speed update releases, if you are having very slow chatting, download CipherChat for your desktop or BlueStacks for a fair speed boost. CipherChat v1.1 is currently in testing phase and should be releasing soon.
 ### Cipherchat v1.2 (Currently only in concept)
 Cipherchat 1.2 will cut down on database usage up to tenfold by completely reworking the encryption system. Currently, when you send a message in a room, it actually sends one direct message to every member in the room so they can decrypt the message, exponentially filling up the limited Postgres server that CipherChat runs on. To fix this, I will introduce a new system for rooms where every time you create a room, it will generate a private key and public key for that room. Since the private key cannot be safely stored on the database, it will make multiple copies of the key, each encrypted using the public key of the person it is for. In other words, the private key is securely "sent" to each member of the room, which they can use to encrypt and decrypt messages from that room. That way, instead of sending multiple direct messages to each member of a room, you can just send one encrypted message which can be read by every member of the group using the securely shared private key.
