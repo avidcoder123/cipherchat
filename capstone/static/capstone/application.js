@@ -80,11 +80,16 @@ document.addEventListener('DOMContentLoaded', () => {
             if(data.recipient == currentuser && data.sender != currentuser) {
                 let message=`<div class="alert alert-${currentuser === data.sender ? "success":"dark"}" role="alert">\
                 <a href="/profile/${data.sender}">@${data.sender}</a><hr>\
-                <h5>${escapeOutput(decodeURI(cryptico.decrypt(data.body,privatekey).plaintext))}</h5>\
-                ${new Date(data.timestamp)}\
+                <h5>{{body}}</h5>\
+                {{timestamp}}\
               </div>`
-                document.querySelector('#body').innerHTML+=message;
-                notify(decodeURI(cryptico.decrypt(data.body,privatekey).plaintext))
+                let template = Handlebars.compile(message);
+                document.querySelector('#body').innerHTML+=template({
+                    sender:data.sender,
+                    body:decodeURI(cryptico.decrypt(data.body,privatekey).plaintext),
+                    timestamp: new Date(data.timestamp)
+                });
+                notify(data.sender + ": " + decodeURI(cryptico.decrypt(data.body,privatekey).plaintext))
             }
         };
         chatSocket.onclose = function(e) {
@@ -111,17 +116,18 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         document.querySelector('#send').onclick = function(e) {
-            var message = escapeOutput(document.querySelector('#message').value);
+            var message = document.querySelector('#message').value;
             document.querySelector("#message").value = "";
             if (!message){
                 return false;
             }
             let message2=`<div class="alert alert-success" role="alert">\
                 <a href="/profile/${currentuser}">@${currentuser}</a><hr>\
-                <h5>${escapeOutput(message)}</h5>\
+                <h5>{{message}}</h5>\
                 ${new Date()}\
               </div>`
-                document.querySelector('#body').innerHTML+=message2;
+            let template = Handlebars.compile(message2)
+            document.querySelector('#body').innerHTML+=template({message:message});
             for(userid in window.users){
                 let user = window.users[userid];
                 const cipher = cryptico.encrypt(encodeURI(message),user.key,privatekey)
@@ -179,15 +185,7 @@ function accept(id,pk) {
     })
     
 }
-/*------------------------------------------------------
-XSS Protection code from https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html
---------------------------------------------------------*/
-function escapeOutput(toOutput){
-    return toOutput.replace(/\&/g, '&amp;')
-        .replace(/\</g, '&lt;')
-        .replace(/\>/g, '&gt;')
-        .replace(/\"/g, '&quot;')
-}
+
 function notify(message) {
   if(document.hidden){
   // Let's check if the browser supports notifications
