@@ -28,6 +28,7 @@ class ChatConsumer(WebsocketConsumer):
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
         message = json.loads(message)
+        print(message)
         sender = User.objects.get(username=message['sender'])
         room=Room.objects.get(pk=message['roomid'])
         receiver = PublicKey.objects.get(publickey = message['publickey'])
