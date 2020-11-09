@@ -80,11 +80,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if(data.recipient == currentuser && data.sender != currentuser) {
                 let message=`<div class="alert alert-${currentuser === data.sender ? "success":"dark"}" role="alert">\
                 <a href="/profile/${data.sender}">@${data.sender}</a><hr>\
-                <h5>${escapeOutput(cryptico.decrypt(data.body,privatekey).plaintext)}</h5>\
+                <h5>${escapeOutput(decodeURI(cryptico.decrypt(data.body,privatekey).plaintext))}</h5>\
                 ${data.timestamp}\
               </div>`
                 document.querySelector('#body').innerHTML+=message;
-                notify(cryptico.decrypt(data.body,privatekey).plaintext)
+                notify(decodeURI(cryptico.decrypt(data.body,privatekey).plaintext))
                 document.querySelector('#emptymessage').innerHTML="";
             }
         };
@@ -94,9 +94,9 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('[data-decrypted = "false"]').forEach(e => {
             let decrypted = cryptico.decrypt(e.dataset.contents, privatekey);
             if(decrypted.signature == "verified") {
-                e.innerHTML = decrypted.plaintext;
+                e.innerHTML = decodeURI(decrypted.plaintext);
             } else {
-                e.innerHTML = `<b>WARNING: This message may have been intercepted or sent by a hacker because it does not have a valid signature.</b><br>${decrypted.plaintext}`
+                e.innerHTML = `<b>WARNING: This message may have been intercepted or sent by a hacker because it does not have a valid signature.</b><br>${decodeURI(decrypted.plaintext)}`
             }
             e.hidden = false
             e.dataset.decrypted = "true"
@@ -127,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
                      "message":JSON.stringify({
                      "roomid": path[2],
                      "sender": currentuser,
-                     "body": cipher.cipher,
+                     "body": encodeURI(cipher.cipher),
                      "recipient": user.user,
                })
             }))
