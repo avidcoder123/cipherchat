@@ -228,7 +228,7 @@ def chat(request, id):
         all_messages.append(message.serialize())
     user_data = []
     for person in thisroom.members.all():
-        key = Publickey.objects.get(user=person)
+        key = PublicKey.objects.get(user=person)
         user_data.append(key)
     return render(request, "capstone/chat.html",{
         "messages": all_messages,
