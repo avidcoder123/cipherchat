@@ -119,12 +119,9 @@ document.addEventListener('DOMContentLoaded', () => {
               </div>`
                 document.querySelector('#body').innerHTML+=message2;
             console.log(window.users);
-            for(user in window.users){
-                console.log(user);
-                console.log(user.key);
+            for(userid in window.users){
+                let user = window.users[userid];
                 const cipher = cryptico.encrypt(message,user.key,privatekey)
-                console.log(cipher.cipher);
-                console.log(user.user);
                 chatSocket.send(JSON.stringify({
                      "message":JSON.stringify({
                      "roomid": path[2],
