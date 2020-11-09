@@ -98,7 +98,8 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('[data-decrypted = "false"]').forEach(e => {
             let decrypted = cryptico.decrypt(e.dataset.contents, privatekey);
             if(decrypted.signature == "verified") {
-                e.innerHTML = decodeURI(decrypted.plaintext);
+                let template = Handlebars.compile("{{message}}")
+                e.innerHTML = template({message: decodeURI(decrypted.plaintext)});
             } else {
                 e.innerHTML = `<b>WARNING: This message may have been intercepted or sent by a hacker because it does not have a valid signature.</b><br>${decodeURI(decrypted.plaintext)}`
             }
