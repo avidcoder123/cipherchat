@@ -1,4 +1,5 @@
 {% extends "capstone/layout.html" %}
+{% load tz %}
 {% block body %}
 <script>
 window.users = []
@@ -13,7 +14,7 @@ window.users.push({user: "{{thisuser.user.username}}", key: "{{thisuser.publicke
 <div class="alert alert-success" role="alert">
   <a href="/profile/{{message.sender}}">@{{message.sender}}</a><hr>
   <h5 class="card-title" data-contents="{{message.body}}" data-decrypted="false">Decrypting...</h5>
-  Sent {{message.timestamp}} UTC
+  Sent {{message.timestamp|localtime}}
 </div>
 {% else %}
 <div class="alert alert-dark" role="alert">
