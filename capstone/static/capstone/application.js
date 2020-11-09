@@ -72,6 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
             + '/'
             );
         chatSocket.onmessage = function(e) {
+            document.querySelector('#emptymessage').remove();
             window.scrollTo(0, document.body.scrollHeight || document.documentElement.scrollHeight);
             let data = JSON.parse(e.data);
             data = JSON.parse(data.message);
