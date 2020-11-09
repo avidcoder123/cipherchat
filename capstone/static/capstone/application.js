@@ -85,7 +85,6 @@ document.addEventListener('DOMContentLoaded', () => {
               </div>`
                 document.querySelector('#body').innerHTML+=message;
                 notify(decodeURI(cryptico.decrypt(data.body,privatekey).plaintext))
-                document.querySelector('#emptymessage').innerHTML="";
             }
         };
         chatSocket.onclose = function(e) {
