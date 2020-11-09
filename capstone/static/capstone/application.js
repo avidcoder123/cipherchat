@@ -72,7 +72,8 @@ document.addEventListener('DOMContentLoaded', () => {
             + '/'
             );
         chatSocket.onmessage = function(e) {
-            document.querySelector('#emptymessage').remove();
+            let empty = document.querySelector('#emptymessage');
+            empty && empty.delete()
             window.scrollTo(0, document.body.scrollHeight || document.documentElement.scrollHeight);
             let data = JSON.parse(e.data);
             data = JSON.parse(data.message);
@@ -119,7 +120,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 ${new Date()}\
               </div>`
                 document.querySelector('#body').innerHTML+=message2;
-            console.log(window.users);
             for(userid in window.users){
                 let user = window.users[userid];
                 const cipher = cryptico.encrypt(message,user.key,privatekey)
