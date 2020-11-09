@@ -31,8 +31,7 @@ class ChatConsumer(WebsocketConsumer):
         print(message)
         sender = User.objects.get(username=message['sender'])
         room=Room.objects.get(pk=message['roomid'])
-        receiver = PublicKey.objects.get(publickey = message['publickey'])
-        receiver = receiver.user
+        receiver = User.objects.get(username = message['recipient'])
         body=message['body']
         newmessage = Message.objects.create(room_data = room, sender = sender, receiver = receiver, body = body)
         newmessage.save()
