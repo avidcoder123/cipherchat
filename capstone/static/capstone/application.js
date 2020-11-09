@@ -122,12 +122,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.querySelector('#body').innerHTML+=message2;
             for(userid in window.users){
                 let user = window.users[userid];
-                const cipher = cryptico.encrypt(message,user.key,privatekey)
+                const cipher = cryptico.encrypt(encodeURI(message),user.key,privatekey)
                 chatSocket.send(JSON.stringify({
                      "message":JSON.stringify({
                      "roomid": path[2],
                      "sender": currentuser,
-                     "body": encodeURI(cipher.cipher),
+                     "body": cipher.cipher,
                      "recipient": user.user,
                })
             }))
