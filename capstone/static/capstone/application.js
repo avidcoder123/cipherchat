@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 let message=`<div class="alert alert-${currentuser === data.sender ? "success":"dark"}" role="alert">\
                 <a href="/profile/${data.sender}">@${data.sender}</a><hr>\
                 <h5>${escapeOutput(decodeURI(cryptico.decrypt(data.body,privatekey).plaintext))}</h5>\
-                ${data.timestamp}\
+                ${new Date(data.timestamp)}\
               </div>`
                 document.querySelector('#body').innerHTML+=message;
                 notify(decodeURI(cryptico.decrypt(data.body,privatekey).plaintext))
@@ -99,6 +99,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             e.hidden = false
             e.dataset.decrypted = "true"
+        })
+        document.querySelectorAll('.timestamp').forEach(e => {
+            e.innerHTML = new Date(e.dataset.value);
         })
         document.querySelector('#message').focus();
         document.querySelector('#message').onkeyup = function(e) {
