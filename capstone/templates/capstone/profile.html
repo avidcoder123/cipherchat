@@ -1,3 +1,4 @@
+{% load 'tz' %}
 {% extends "capstone/layout.html" %}
 {% block body %}
 <h1>{{thisuser.username}}'s Profile</h1>
@@ -8,6 +9,11 @@
 {% else %}
 <i>This user currently has no status.</i>
 {% endif %}
+{% if lastseen.isoformat %}
+<i> Last Seen <span id = "seen" data-value = "{{lastseen}}"></span>
+{% else %}
+    <i>This user hasn't touched Cipherchat yet.</i>
+{% endif %}
 {% if thisuser == request.user %}
 <hr>
 <form action="/profile/set" method="POST">
@@ -16,4 +22,8 @@
     <input class="form-control" name="status" placeholder="Enter new status" required>
 </form>
 {% endif %}
+    <script>
+        let seen = document.querySelector('#seen')
+        seen.innerHTML = new Date(seen.dataset.value)
+    </script>
 {% endblock %}
