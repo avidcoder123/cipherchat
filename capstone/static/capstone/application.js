@@ -80,7 +80,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if(data.recipient == currentuser && data.sender != currentuser) {
                 let message=`<div class="alert alert-${currentuser === data.sender ? "success":"dark"}" role="alert">\
                 <a href="/profile/${data.sender}">@${data.sender}</a><hr>\
-                <h5>{{body}}</h5>\
+                <h5>\
+                {{body}}\
+                </h5>\
                 {{timestamp}}\
               </div>`
                 let template = Handlebars.compile(message);
@@ -124,7 +126,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             let message2=`<div class="alert alert-success" role="alert">\
                 <a href="/profile/${currentuser}">@${currentuser}</a><hr>\
-                <h5>{{message}}</h5>\
+                <h5>\
+                {{message}}\
+                </h5>\
                 ${new Date()}\
               </div>`
             let template = Handlebars.compile(message2)
