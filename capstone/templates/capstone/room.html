@@ -7,7 +7,7 @@
 <h3>Members:</h3>
 <div id="members">
 {% for member in members %}
-    <a href="#" class="list-group-item list-group-item-action">{{member}}</a>
+    <a href="/profile/{{member}}" class="list-group-item list-group-item-action">{{member}}</a>
 {% endfor %}
 {% if host %}
 <script>
