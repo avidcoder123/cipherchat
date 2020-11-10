@@ -284,7 +284,7 @@ def profile(request,user):
             return render(request, "capstone/profile.html",{
                 "thisuser":requesteduser,
                 "status": status,
-                "lastseen":Message.objects.filter(sender = requesteduser).first().timestamp
+                "lastseen":Message.objects.filter(sender = requesteduser).first()
             })
         except:
             return HttpResponseRedirect(reverse("index"))
