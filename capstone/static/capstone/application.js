@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
             let mbody = Handlebars.compile("{{message}}")
             mbody = mbody({message: message})
             let template = Handlebars.compile(message2)
-            document.querySelector('#body').innerHTML+=template({message:mbody});
+            document.querySelector('#body').innerHTML+=template({message:marked(mbody)});
             for(userid in window.users){
                 let user = window.users[userid];
                 const cipher = cryptico.encrypt(encodeURI(message),user.key,privatekey)
