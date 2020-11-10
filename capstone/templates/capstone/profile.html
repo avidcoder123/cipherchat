@@ -24,6 +24,6 @@
 {% endif %}
     <script>
         let seen = document.querySelector('#seen')
-        seen.innerHTML = new Date(seen.dataset.value)
+        seen.innerHTML = new Date(seen.dataset.value).toLocaleString()
     </script>
 {% endblock %}
