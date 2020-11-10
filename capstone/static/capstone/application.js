@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.querySelector('#body').innerHTML+=template({
                     sender:data.sender,
                     body:marked(mbody),
-                    timestamp: new Date(data.timestamp)
+                    timestamp: new Date(data.timestamp).toLocaleString()
                 });
                 notify(data.sender + ": " + decodeURI(cryptico.decrypt(data.body,privatekey).plaintext))
             }
@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
             e.dataset.decrypted = "true"
         })
         document.querySelectorAll('.timestamp').forEach(e => {
-            e.innerHTML = new Date(e.dataset.value);
+            e.innerHTML = new Date(e.dataset.value).toLocaleString();
         })
         document.querySelector('#message').focus();
         document.querySelector('#message').onkeyup = function(e) {
@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <h5>\
                 {{{message}}}\
                 </h5>\
-                ${new Date()}\
+                ${new Date().toLocaleString()}\
               </div>`
             let mbody = Handlebars.compile("{{message}}")
             mbody = mbody({message: message})
