@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 let template = Handlebars.compile(message);
                 document.querySelector('#body').innerHTML+=template({
                     sender:data.sender,
-                    body:decodeURI(cryptico.decrypt(data.body,privatekey).plaintext),
+                    body:marked(decodeURI(cryptico.decrypt(data.body,privatekey).plaintext)),
                     timestamp: new Date(data.timestamp)
                 });
                 notify(data.sender + ": " + decodeURI(cryptico.decrypt(data.body,privatekey).plaintext))
@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
             let decrypted = cryptico.decrypt(e.dataset.contents, privatekey);
             if(decrypted.signature == "verified") {
                 let template = Handlebars.compile("{{message}}")
-                e.innerHTML = template({message: decodeURI(decrypted.plaintext)});
+                e.innerHTML = template({message: marked(decodeURI(decrypted.plaintext))});
             } else {
                 e.innerHTML = `<b>WARNING: This message may have been intercepted or sent by a hacker because it does not have a valid signature.</b><br>${decodeURI(decrypted.plaintext)}`
             }
