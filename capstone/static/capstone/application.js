@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    var markdown = new showdown.Converter()
     var path = window.location.pathname.split('/');
     var csrf = Cookies.get('csrftoken')
     if (path[1] == 'new_room') {
@@ -82,16 +81,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 let message=`<div class="alert alert-${currentuser === data.sender ? "success":"dark"}" role="alert">\
                 <a href="/profile/${data.sender}">@${data.sender}</a><hr>\
                 <h5>\
-                {{body}}\
+                {{{body}}}\
                 </h5>\
                 {{timestamp}}\
               </div>`
                 let template = Handlebars.compile(message);
-                document.querySelector('#body').innerHTML+=markdown.makeHtml(template({
+                let mbody = Handlebars.compile("{{message}}")
+                mbody = mbody({message:decodeURI(cryptico.decrypt(data.body,privatekey).plaintext)})
+                document.querySelector('#body').innerHTML+=template({
                     sender:data.sender,
-                    body:decodeURI(cryptico.decrypt(data.body,privatekey).plaintext),
+                    body:marked(mbody),
                     timestamp: new Date(data.timestamp)
-                }));
+                });
                 notify(data.sender + ": " + decodeURI(cryptico.decrypt(data.body,privatekey).plaintext))
             }
         };
@@ -102,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
             let decrypted = cryptico.decrypt(e.dataset.contents, privatekey);
             if(decrypted.signature == "verified") {
                 let template = Handlebars.compile("{{message}}")
-                e.innerHTML = markdown.makeHtml(template({message: decodeURI(decrypted.plaintext)}));
+                e.innerHTML = template({message: decodeURI(decrypted.plaintext)});
             } else {
                 e.innerHTML = `<b>WARNING: This message may have been intercepted or sent by a hacker because it does not have a valid signature.</b><br>${decodeURI(decrypted.plaintext)}`
             }
@@ -128,12 +129,14 @@ document.addEventListener('DOMContentLoaded', () => {
             let message2=`<div class="alert alert-success" role="alert">\
                 <a href="/profile/${currentuser}">@${currentuser}</a><hr>\
                 <h5>\
-                {{message}}\
+                {{{message}}}\
                 </h5>\
                 ${new Date()}\
               </div>`
+            let mbody = Handlebars.compile("{{message}}")
+            mbody = mbody({message: message})
             let template = Handlebars.compile(message2)
-            document.querySelector('#body').innerHTML+=markdown.makeHtml(template({message:message}));
+            document.querySelector('#body').innerHTML+=template({message:mbody});
             for(userid in window.users){
                 let user = window.users[userid];
                 const cipher = cryptico.encrypt(encodeURI(message),user.key,privatekey)
