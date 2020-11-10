@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <h5>\
                 {{{message}}}\
                 </h5>\
-                ${new Date().toLocaleString()}\
+                Sent ${new Date().toLocaleString()}\
               </div>`
             let mbody = Handlebars.compile("{{message}}")
             mbody = mbody({message: message})
