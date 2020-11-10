@@ -275,7 +275,7 @@ def profile(request,user):
                 "status": setstatus
             })
     else:
-        if True:
+        try:
             requesteduser = User.objects.get(username = user)
             try:
                 status = Status.objects.get(thisuser = requesteduser) 
@@ -284,7 +284,7 @@ def profile(request,user):
             return render(request, "capstone/profile.html",{
                 "thisuser":requesteduser,
                 "status": status,
-                "lastseen":Message.objects.filter(sender = requesteduser).first().timestamp
+                "lastseen":Message.objects.filter(sender = requesteduser).order_by("-timestamp").first().timestamp
             })
-#        except:
-#           return HttpResponseRedirect(reverse("index"))
+        except:
+           return HttpResponseRedirect(reverse("index"))
