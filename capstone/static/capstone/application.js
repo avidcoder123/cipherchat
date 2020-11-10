@@ -84,11 +84,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 {{timestamp}}\
               </div>`
                 let template = Handlebars.compile(message);
-                document.querySelector('#body').innerHTML+=template({
+                document.querySelector('#body').innerHTML+=marked(template({
                     sender:data.sender,
-                    body:marked(decodeURI(cryptico.decrypt(data.body,privatekey).plaintext)),
+                    body:(decodeURI(cryptico.decrypt(data.body,privatekey).plaintext),
                     timestamp: new Date(data.timestamp)
-                });
+                }));
                 notify(data.sender + ": " + decodeURI(cryptico.decrypt(data.body,privatekey).plaintext))
             }
         };
@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
             let decrypted = cryptico.decrypt(e.dataset.contents, privatekey);
             if(decrypted.signature == "verified") {
                 let template = Handlebars.compile("{{message}}")
-                e.innerHTML = template({message: marked(decodeURI(decrypted.plaintext))});
+                e.innerHTML = marked(template({message: decodeURI(decrypted.plaintext)}));
             } else {
                 e.innerHTML = `<b>WARNING: This message may have been intercepted or sent by a hacker because it does not have a valid signature.</b><br>${decodeURI(decrypted.plaintext)}`
             }
@@ -128,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 ${new Date()}\
               </div>`
             let template = Handlebars.compile(message2)
-            document.querySelector('#body').innerHTML+=template({message:message});
+            document.querySelector('#body').innerHTML+=marked(template({message:message}));
             for(userid in window.users){
                 let user = window.users[userid];
                 const cipher = cryptico.encrypt(encodeURI(message),user.key,privatekey)
