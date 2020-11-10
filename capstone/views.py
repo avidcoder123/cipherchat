@@ -281,10 +281,14 @@ def profile(request,user):
                 status = Status.objects.get(thisuser = requesteduser) 
             except:
                 status=None
+            try:
+                lastseen = Message.objects.filter(sender = requesteduser).order_by("-timestamp").first().timestamp
+            except:
+                lastseen = None
             return render(request, "capstone/profile.html",{
                 "thisuser":requesteduser,
                 "status": status,
-                "lastseen":Message.objects.filter(sender = requesteduser).order_by("-timestamp").first().timestamp
+                "lastseen":lastseen
             })
         except:
            return HttpResponseRedirect(reverse("index"))
