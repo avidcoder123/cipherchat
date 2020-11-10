@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 let template = Handlebars.compile(message);
                 document.querySelector('#body').innerHTML+=marked(template({
                     sender:data.sender,
-                    body:(decodeURI(cryptico.decrypt(data.body,privatekey).plaintext),
+                    body:decodeURI(cryptico.decrypt(data.body,privatekey).plaintext,
                     timestamp: new Date(data.timestamp)
                 }));
                 notify(data.sender + ": " + decodeURI(cryptico.decrypt(data.body,privatekey).plaintext))
