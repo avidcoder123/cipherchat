@@ -275,7 +275,7 @@ def profile(request,user):
                 "status": setstatus
             })
     else:
-        try:
+        if True:
             requesteduser = User.objects.get(username = user)
             try:
                 status = Status.objects.get(thisuser = requesteduser) 
@@ -286,5 +286,5 @@ def profile(request,user):
                 "status": status,
                 "lastseen":Message.objects.filter(sender = requesteduser).first()
             })
-        except:
-            return HttpResponseRedirect(reverse("index"))
+#        except:
+#           return HttpResponseRedirect(reverse("index"))
