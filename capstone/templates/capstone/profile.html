@@ -8,10 +8,11 @@
 {% else %}
 <i>This user currently has no status.</i>
 {% endif %}
+<br>
 {% if lastseen.isoformat %}
-<i> Last Seen <span id = "seen" data-value = "{{lastseen}}"></span>
+<i> Last Seen <span id = "seen" data-value = "{{lastseen.isoformat}}"></span>
 {% else %}
-    <i>This user hasn't touched Cipherchat yet.</i>
+    <b>This user hasn't touched Cipherchat yet.</b>
 {% endif %}
 {% if thisuser == request.user %}
 <hr>
