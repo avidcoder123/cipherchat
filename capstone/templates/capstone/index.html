@@ -5,8 +5,8 @@
 <h2>Your rooms</h2>
 {% if request.session.rooms %}
 {% for room in request.session.rooms %}
-    <a href="/room/{{room.id}}" class="list-group-item list-group-item-action"><table><td>{{room.name}}</td>
-        <td><span text-align="right"><button class="btn btn-primary" href="/chat/{{room.id}}">Jump to chat</button></span></td></table></a>
+    <a href="/room/{{room.id}}" class="list-group-item list-group-item-action">{{room.name}}
+        <span margin-left = "75%"><button class="btn btn-primary" href="/chat/{{room.id}}">Jump to chat</button></span></a>
 {% endfor %}
 {% endif %}
 <h2>Your Room Invites</h2>
