@@ -278,7 +278,7 @@ def profile(request,user):
         try:
             requesteduser = User.objects.get(username = user)
             try:
-                status = Status.objects.get(thisuser = requesteduser) 
+                status = Status.objects.get(thisuser = requesteduser)
             except:
                 status=None
             try:
@@ -292,3 +292,5 @@ def profile(request,user):
             })
         except:
            return HttpResponseRedirect(reverse("index"))
+def policy(request):
+    return render(request, "capstone/policy.html")

@@ -13,5 +13,6 @@ urlpatterns = [
     path("accept", views.accept, name="accept"),
     path("chat/<int:id>", views.chat, name="chat"),
     path("ajax/<str:slug>", views.ajax, name="ajax"),
-    path("profile/<str:user>", views.profile, name="profile")
+    path("profile/<str:user>", views.profile, name="profile"),
+    path("/policy",views.policy,name="policy")
 ]
