@@ -7,6 +7,8 @@
 {% for room in request.session.rooms %}
     <a href="/room/{{room.id}}" class="list-group-item list-group-item-action ">{{room.name}}</a>
 {% endfor %}
+{% else %}
+<h3>You are currently not in any rooms.</h3>
 {% endif %}
 <hr>
 <h2>Your Room Invites</h2>
@@ -18,6 +20,6 @@
 </div>
 {% endfor %}
 {% else %}
-<h2>No Room Invites Yet!</h2>
+<h3>No Room Invites Yet!</h3>
 {% endif %}
 {% endblock %}
