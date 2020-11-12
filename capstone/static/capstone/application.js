@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+    Notification.requestPermission()
     var path = window.location.pathname.split('/');
     var csrf = Cookies.get('csrftoken')
     if (path[1] == 'new_room') {
