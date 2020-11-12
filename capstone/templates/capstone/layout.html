@@ -21,18 +21,6 @@
     <script>
     var currentuser = "{{request.user.username}}"
     </script>
-    <style>
-    #footer {
-          font-size:15px;
-          position: fixed;
-          left: 0;
-          bottom: 0;
-          width: 100%;
-          background-color: black;
-          color: white;
-          text-align: center;
-    }
-    </style>
   <meta
       name="viewport"
       content="width=device-width, height=device-height, viewport-fit=cover, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"
@@ -100,6 +88,18 @@
           {% block body %}
           {% endblock %}
           <hr>
+    <style>
+        #footer {
+              font-size:15px;
+              position: fixed;
+              left: 0;
+              bottom: 0;
+              width: 100%;
+              background-color: black;
+              color: white;
+              text-align: center;
+        }
+    </style>
     <footer>
         <div id="footer">
           RSA-Cipherchat by thomcatmeow |
