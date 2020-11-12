@@ -68,6 +68,8 @@
                     </li>
                     {% if user.is_superuser %}
                         <a class="nav-link" href="/admin">Admin Controls</a>
+                    {% elif user.is_staff %}
+                        <a class="nav-link" href="/admin">Staff Controls</a>
                     {% endif %}
                 {% else %}
                     <li class="nav-item">
