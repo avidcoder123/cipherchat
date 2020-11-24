@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     alert(result.message);
                 })
             }
-        
+
         }
         document.querySelector('#invite').onclick = () => {
             let invites = document.querySelector('#invites').value.split(',');
@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
             );
         chatSocket.onmessage = function(e) {
             let empty = document.querySelector('#emptymessage');
-            empty && empty.remove()
+            empty && empty.remove();
             window.scrollTo(0, document.body.scrollHeight || document.documentElement.scrollHeight);
             let data = JSON.parse(e.data);
             data = JSON.parse(data.message);
@@ -85,16 +85,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 {{{body}}}\
                 </h5>\
                 {{timestamp}}\
-              </div>`
+              </div>`;
                 let template = Handlebars.compile(message);
-                let mbody = Handlebars.compile("{{message}}")
-                mbody = mbody({message:decodeURI(cryptico.decrypt(data.body,privatekey).plaintext)})
+                let mbody = Handlebars.compile("{{message}}");
+                let decrypted = cryptico.decrypt(data.body,privatekey);
+                var senderkey;
+                for(i of window.users){
+                    senderkey = i.user == data.sender ? i.key : null
+                }
+                decrypted = decrypted.publickey == senderkey ? decrypted.plaintext : `**WARNING: Our software has detected that this message may be sent by a hacker.**  ${decodeURI(decrypted.plaintext)}`
+                mbody = mbody({message:decodeURI(decrypted.plaintext)});
                 document.querySelector('#body').innerHTML+=template({
                     sender:data.sender,
                     body:marked(mbody),
                     timestamp: new Date(data.timestamp).toLocaleString()
                 });
-                notify(data.sender + ": " + decodeURI(cryptico.decrypt(data.body,privatekey).plaintext))
+                notify(data.sender + ": " + decodeURI(cryptico.decrypt(data.body,privatekey)));
             }
         };
         chatSocket.onclose = function(e) {
@@ -102,11 +108,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         document.querySelectorAll('[data-decrypted = "false"]').forEach(e => {
             let decrypted = cryptico.decrypt(e.dataset.contents, privatekey);
-            if(decrypted.signature == "verified") {
+            var sender = e.parentNode.childNodes[0].innerHTML;
+            var senderkey;
+            for(i of window.users){
+                senderkey = i.user == sender ? i.key : null
+            }
+            if(decrypted.signature == "verified" && decrypted.publickey == senderkey) {
                 let template = Handlebars.compile("{{message}}")
                 e.innerHTML = marked(template({message: decodeURI(decrypted.plaintext)}));
             } else {
-                e.innerHTML = `<b>WARNING: This message may have been intercepted or sent by a hacker because it does not have a valid signature.</b><br>${decodeURI(decrypted.plaintext)}`
+                e.innerHTML = `<b>WARNING: Our software has detected that this message may be sent by a hacker.</b><br>${decodeURI(decrypted.plaintext)}`
             }
             e.hidden = false
             e.dataset.decrypted = "true"
@@ -193,7 +204,7 @@ function accept(id,pk) {
     .then(result => {
         window.location.href = `/room/${id}`;
     })
-    
+
 }
 
 function notify(message) {
@@ -219,7 +230,7 @@ function notify(message) {
     });
   }
 
-  // At last, if the user has denied notifications, and you 
+  // At last, if the user has denied notifications, and you
   // want to be respectful there is no need to bother them any more.
 }
 }

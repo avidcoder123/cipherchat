@@ -5,7 +5,7 @@
 window.users = []
 {% for thisuser in user_data %}
 window.users.push({user: "{{thisuser.user.username}}", key: "{{thisuser.publickey}}" })
-  {% endfor %}
+{% endfor %}
 </script>
 <div id="body">
 {% if messages %}
