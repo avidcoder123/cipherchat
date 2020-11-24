@@ -93,7 +93,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 for(i of window.users){
                     senderkey = i.user == data.sender ? i.key : null
                 }
-                decrypted = decrypted.publicKeyString == senderkey ? decrypted.plaintext : `**WARNING: Our software has detected that this message may be sent by a hacker.**  ${decodeURI(decrypted.plaintext)}`
+                console.log(senderkey)
+                decrypted = (decrypted.publicKeyString == senderkey) ? decrypted.plaintext : `**WARNING: Our software has detected that this message may be sent by a hacker.**  ${decodeURI(decrypted.plaintext)}`
                 mbody = mbody({message:decodeURI(decrypted)});
                 document.querySelector('#body').innerHTML+=template({
                     sender:data.sender,
