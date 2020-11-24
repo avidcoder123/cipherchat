@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     body:marked(mbody),
                     timestamp: new Date(data.timestamp).toLocaleString()
                 });
-                notify(data.sender + ": " + decodeURI(cryptico.decrypt(data.body,privatekey)));
+                notify(data.sender + ": " + decodeURI(decrypted));
             }
         };
         chatSocket.onclose = function(e) {
