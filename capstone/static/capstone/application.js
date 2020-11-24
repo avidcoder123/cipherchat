@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     senderkey = i.user == data.sender ? i.key : null
                 }
                 decrypted = decrypted.publickey == senderkey ? decrypted.plaintext : `**WARNING: Our software has detected that this message may be sent by a hacker.**  ${decodeURI(decrypted.plaintext)}`
-                mbody = mbody({message:decodeURI(decrypted.plaintext)});
+                mbody = mbody({message:decodeURI(decrypted)});
                 document.querySelector('#body').innerHTML+=template({
                     sender:data.sender,
                     body:marked(mbody),
