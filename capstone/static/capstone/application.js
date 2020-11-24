@@ -113,8 +113,6 @@ document.addEventListener('DOMContentLoaded', () => {
             for(i of window.users){
                 senderkey = i.user == sender ? i.key : null
             }
-            console.log(senderkey);
-            console.log(sender);
             if(decrypted.signature == "verified" && decrypted.publicKeyString == senderkey) {
                 let template = Handlebars.compile("{{message}}")
                 e.innerHTML = marked(template({message: decodeURI(decrypted.plaintext)}));
