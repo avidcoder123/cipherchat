@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 for(i of window.users){
                     senderkey = i.user == data.sender ? i.key : null
                 }
-                decrypted = decrypted.publickey == senderkey ? decrypted.plaintext : `**WARNING: Our software has detected that this message may be sent by a hacker.**  ${decodeURI(decrypted.plaintext)}`
+                decrypted = decrypted.publicKeyString == senderkey ? decrypted.plaintext : `**WARNING: Our software has detected that this message may be sent by a hacker.**  ${decodeURI(decrypted.plaintext)}`
                 mbody = mbody({message:decodeURI(decrypted)});
                 document.querySelector('#body').innerHTML+=template({
                     sender:data.sender,
@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
             for(i of window.users){
                 senderkey = i.user == sender ? i.key : null
             }
-            if(decrypted.signature == "verified" && decrypted.publickey == senderkey) {
+            if(decrypted.signature == "verified" && decrypted.publicKeyString == senderkey) {
                 let template = Handlebars.compile("{{message}}")
                 e.innerHTML = marked(template({message: decodeURI(decrypted.plaintext)}));
             } else {
