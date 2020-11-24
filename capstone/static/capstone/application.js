@@ -91,7 +91,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 let decrypted = cryptico.decrypt(data.body,privatekey);
                 var senderkey;
                 for(i of window.users){
-                    senderkey = i.user == data.sender ? i.key : null
+                    if(i.user == data.sender){
+                        senderkey = i.key
+                    }
                 }
                 console.log(senderkey)
                 decrypted = (decrypted.publicKeyString == senderkey) ? decrypted.plaintext : `**WARNING: Our software has detected that this message may be sent by a hacker.**  ${decodeURI(decrypted.plaintext)}`
