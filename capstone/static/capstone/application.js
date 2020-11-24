@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         document.querySelectorAll('[data-decrypted = "false"]').forEach(e => {
             let decrypted = cryptico.decrypt(e.dataset.contents, privatekey);
-            var sender = e.parentNode.childNodes[0].innerHTML;
+            var sender = e.parentNode.childNodes[1].innerHTML;
             var senderkey;
             for(i of window.users){
                 senderkey = i.user == sender ? i.key : null
