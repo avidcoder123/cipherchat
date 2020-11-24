@@ -95,7 +95,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         senderkey = i.key
                     }
                 }
-                console.log(senderkey)
                 decrypted = (decrypted.publicKeyString == senderkey) ? decrypted.plaintext : `**WARNING: Our software has detected that this message may be sent by a hacker.**  ${decodeURI(decrypted.plaintext)}`
                 mbody = mbody({message:decodeURI(decrypted)});
                 document.querySelector('#body').innerHTML+=template({
