@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
             var sender = e.parentNode.childNodes[1].innerHTML;
             var senderkey;
             for(i of window.users){
-                senderkey = i.user == sender ? i.key : null
+               if(i.user == sender.substring(1)){senderkey=i.key;}
             }
             if(decrypted.signature == "verified" && decrypted.publicKeyString == senderkey) {
                 let template = Handlebars.compile("{{message}}")
