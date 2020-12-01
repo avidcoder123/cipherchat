@@ -17,6 +17,8 @@ class Room(models.Model):
             "description": self.description,
             "members": [user.username for user in self.members.all()]
         }
+    def __str__(self):
+        return f"Members:{self.members.count()},Name:{self.name}"
 class Invite(models.Model):
     room = models.ForeignKey(Room, on_delete=models.CASCADE, related_name="room")
     recipient = models.ForeignKey(User, on_delete=models.CASCADE, related_name="recipient")
@@ -32,6 +34,8 @@ class Invite(models.Model):
     def save(self, *args, **kwargs):
         self.fingerprint = hash(f"{self.room.id}{self.recipient.username}")
         super().save(*args, **kwargs)
+    def __str__(self):
+        return f"Invite {self.recipient.username} to {self.room.name}"
 class Message(models.Model):
     room_data = models.ForeignKey(Room, on_delete = models.CASCADE, related_name="room_data")
     timestamp = models.DateTimeField(auto_now_add = True)
@@ -50,6 +54,10 @@ class Message(models.Model):
 class PublicKey(models.Model):
     user = models.ForeignKey(User, on_delete = models.CASCADE, related_name="user")
     publickey = models.CharField(max_length = 1024)
+    def __str__(self):
+        return f"{self.user.username}'s public key"
 class Status(models.Model):
     thisuser = models.ForeignKey(User, on_delete = models.CASCADE, related_name="thisuser")
     status = models.CharField(max_length = 256, null=True)
+    def __str__(self):
+        return f"{self.thisuser.username}: {self.status}"
