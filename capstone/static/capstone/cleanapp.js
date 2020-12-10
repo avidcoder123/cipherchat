@@ -44,7 +44,7 @@ $('document').ready(async function() {
                 //Make sure the user wants to leave
                 if (confirm("WARNING: If you leave this group, you cannot come back without an invitation.")){
                     //Send leave request to API
-                    let response = await fetch(`leave/${path[2]}`);
+                    let response = await fetch(`/leave/${path[2]}`);
                     let result = await response.json();
                     window.location.href = '/';
                     alert(result.message);
