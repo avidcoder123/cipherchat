@@ -63,4 +63,4 @@ class Status(models.Model):
 class RoomKey(models.Model):
     userperm = models.ForeignKey(User, on_delete = models.CASCADE, related_name="userperm")
     roomdata = models.ForeignKey(Room, on_delete = models.CASCADE, related_name="roomdata")
-    token = models.Charfield(max_length = 1024)
+    token = models.CharField(max_length = 1024)
