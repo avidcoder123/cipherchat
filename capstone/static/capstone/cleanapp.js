@@ -157,7 +157,9 @@ $('document').ready(async function() {
             $('#send').click(async function(e){
                 var message = $('#message').val();
                 $('#message').val(null);
-                !message && return false;
+                if(!message){
+                    return false;
+                }
                 let message2=`<div class="alert alert-success" role="alert">\
                 <a href="/profile/${currentuser}">@${currentuser}</a><hr>\
                 <h5>\
