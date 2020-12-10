@@ -129,7 +129,7 @@ $('document').ready(async function() {
             }
             //Get all encrypted messages
             let texts = await $('[data-decrypted = "false"]');
-            $.each(texts, function(i) {
+            texts.each( async function(i) {
                 //Decrypt each message
                 let decrypted = await cryptico.decrypt(i.data('content'), privatekey);
                 var sender = i.parent().children('[data-decrypted = "false"]')
@@ -143,18 +143,18 @@ $('document').ready(async function() {
                     i.html(`<b>WARNING: Our software has detected that this message may be sent by a hacker.</b><br>${decodeURI(decrypted.plaintext)}`)
                 }
             })
-            $.each($('.timestamp'), function(e){
-                e.html(new Date(e.data('value').toLocaleString();))
+            $('.timestamp').each(async function(e){
+                e.html(new Date(e.data('value').toLocaleString()))
             })
             //Detect message sending
             $('#message').trigger('focus');
-            $('#message').keyup(function(i){
+            $('#message').keyup(async function(i){
                 //Detect Enter
                 if (i.which == 13){
                     $('#send').trigger('click');
                 }
             })
-            $('#send').click(function(e){
+            $('#send').click(async function(e){
                 var message = $('#message').val();
                 $('#message').val(null);
                 !message && return false;
@@ -184,7 +184,7 @@ $('document').ready(async function() {
             })
         break;
         case('login'):
-            $('#login').submit(function(){
+            $('#login').submit(async function(){
                 let username = $('#username').val();
                 let password = $('#password').val();
                 let fingerprint = await SHA256(SHA256(username)+password);
@@ -222,7 +222,7 @@ async function accept(id,pk){
     let result = await res.json()
     window.location.href = `/room/${id}`
 }
-function notify(message) {
+async function notify(message) {
   if(document.hidden){
   // Let's check if the browser supports notifications
   if (!("Notification" in window)) {
@@ -237,7 +237,7 @@ function notify(message) {
 
   // Otherwise, we need to ask the user for permission
   else if (Notification.permission !== "denied") {
-    Notification.requestPermission().then(function (permission) {
+    Notification.requestPermission().then(async function (permission) {
       // If the user accepts, let's create a notification
       if (permission === "granted") {
         var notification = new Notification(message);
