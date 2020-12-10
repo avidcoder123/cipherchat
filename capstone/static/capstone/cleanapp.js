@@ -1,5 +1,7 @@
 //Waits for page to load
 $('document').ready(async function() {
+    //Self-XSS Warning
+    console.warn("WARNING: Do not paste any code you do not understand into this console. Doing so may reveal your messages to a hacker.");
     //Request notification permission
     Notification.requestPermission();
     //Store page path
@@ -73,7 +75,7 @@ $('document').ready(async function() {
             //Scroll to bottom
             window.scrollTo(0,document.body.scrollHeight || document.documentElement.scrollHeight);
             //Generate RSA key
-            const fingerprint = await localStorage.getItem('fingerprint');
+            fingerprint = await localStorage.getItem('fingerprint');
             const privatekey = await cryptico.generateRSAKey(fingerprint,1024);
             var chatSocket = new WebSocket(
                 'wss://'
@@ -189,7 +191,7 @@ $('document').ready(async function() {
             $('#login').submit(async function(){
                 let username = $('#username').val();
                 let password = $('#password').val();
-                let fingerprint = await SHA256(SHA256(username)+password);
+                fingerprint = await SHA256(SHA256(username)+password);
                 //Store user encryption token
                 await localStorange.setItem('fingerprint',fingerprint);
             })
@@ -197,7 +199,7 @@ $('document').ready(async function() {
         case('register'):
             let username = $('#username').val();
             let password = $('#password').val();
-            let fingerprint = await SHA256(SHA256(username)+password);
+            fingerprint = await SHA256(SHA256(username)+password);
             //Store user encryption token
             await localStorange.setItem('fingerprint',fingerprint);
             //Autofillout public key for storage
