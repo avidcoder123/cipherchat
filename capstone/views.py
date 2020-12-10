@@ -5,7 +5,7 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 import json
 from django.db import IntegrityError
-from .models import User, Room, Invite, Message, PublicKey, Status
+from .models import User, Room, Invite, Message, PublicKey, Status, RoomKey
 from django.db import close_old_connections
 
 # Create your views here.
@@ -98,16 +98,17 @@ def new_room(request):
         members = room.members
         if user not in data.get("members"):
             members.add(user)
-        for person in data.get("members"):
-            try:
-                member = User.objects.get(username = person)
-                invite = Invite.objects.create(room = room, recipient = member)
-                invite.save()
-            except:
-                room.delete()
-                return JsonResponse({
-                    "message": "One or more of the listed members do not exist."
-                })
+        if len(data.get("members")) > 0:
+            for person in data.get("members"):
+                try:
+                    member = User.objects.get(username = person)
+                    invite = Invite.objects.create(room = room, recipient = member)
+                    invite.save()
+                except:
+                    room.delete()
+                    return JsonResponse({
+                        "message": "One or more of the listed members do not exist."
+                    })
         if len(room.members.all()) == len(data.get("members"))+1:
             room.save()
             return JsonResponse({
@@ -292,5 +293,3 @@ def profile(request,user):
             })
         except:
            return HttpResponseRedirect(reverse("index"))
-def policy(request):
-    return render(request, "capstone/policy.html")

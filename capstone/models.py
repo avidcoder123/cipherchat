@@ -40,7 +40,6 @@ class Message(models.Model):
     room_data = models.ForeignKey(Room, on_delete = models.CASCADE, related_name="room_data")
     timestamp = models.DateTimeField(auto_now_add = True)
     sender = models.ForeignKey(User, on_delete = models.CASCADE, related_name = "sender")
-    receiver = models.ForeignKey(User, on_delete = models.CASCADE, related_name = "receiver")
     body = models.CharField(max_length = 2000)
 
     def serialize(self):
@@ -61,3 +60,7 @@ class Status(models.Model):
     status = models.CharField(max_length = 256, null=True)
     def __str__(self):
         return f"{self.thisuser.username}: {self.status}"
+class RoomKey(models.Model):
+    userperm = models.ForeignKey(User, on_delete = models.CASCADE, related_name="userperm")
+    roomdata = models.ForeignKey(Room, on_delete = models.CASCADE, related_name="roomdata")
+    token = models.Charfield(max_length = 1024)

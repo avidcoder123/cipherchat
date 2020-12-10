@@ -1,5 +1,5 @@
 //Waits for page to load
-window.onload = async () => {
+$('document').ready(async function() {
     //Request notification permission
     Notification.requestPermission();
     //Store page path
@@ -25,7 +25,7 @@ window.onload = async () => {
                         "title": title,
                         "description": description,
                         "members": members
-                    });
+                    })
                 });
                 let result = await response.json();
                 if(result.message == "Success!"){
@@ -63,7 +63,7 @@ window.onload = async () => {
                     "body": JSON.stringify({
                         "room": id,
                         "invites": invites
-                    });
+                    })
                 });
                 let result = await response.json();
                 alert(result.message);
@@ -119,7 +119,7 @@ window.onload = async () => {
                     })
                     //Add message content to message area
                     let area = await $('#body');
-                    await area.html(await area.html().concat(message));
+                    await area.append(message);
                     await notify(data.sender + ":" + await decodeURI(decrypted));
                 }
             }
@@ -129,13 +129,123 @@ window.onload = async () => {
             }
             //Get all encrypted messages
             let texts = await $('[data-decrypted = "false"]');
-            for(i of texts){
+            $.each(texts, function(i) {
                 //Decrypt each message
-                let decrypted = await cryptico.decrypt(i.dataset.contents, privatekey);
-                /*---------------------------------//
-                LATER: Finish tidy up with JQUERY and await
-                //------------------------------------*/
-            }
+                let decrypted = await cryptico.decrypt(i.data('content'), privatekey);
+                var sender = i.parent().children('[data-decrypted = "false"]')
+                for(e of window.users){
+                   if(e.user == sender.substring(1)){senderkey=e.key;}
+                }
+                if(decrypted.signature == "verified" && decrypted.publicKeyString == senderkey) {
+                let template = Handlebars.compile("{{message}}")
+                    i.html(marked(template({message: decodeURI(decrypted.plaintext)})));
+                } else {
+                    i.html(`<b>WARNING: Our software has detected that this message may be sent by a hacker.</b><br>${decodeURI(decrypted.plaintext)}`)
+                }
+            })
+            $.each($('.timestamp'), function(e){
+                e.html(new Date(e.data('value').toLocaleString();))
+            })
+            //Detect message sending
+            $('#message').trigger('focus');
+            $('#message').keyup(function(i){
+                //Detect Enter
+                if (i.which == 13){
+                    $('#send').trigger('click');
+                }
+            })
+            $('#send').click(function(e){
+                var message = $('#message').val();
+                $('#message').val(null);
+                !message && return false;
+                let message2=`<div class="alert alert-success" role="alert">\
+                <a href="/profile/${currentuser}">@${currentuser}</a><hr>\
+                <h5>\
+                {{{message}}}\
+                </h5>\
+                Sent ${new Date().toLocaleString()}\
+                </div>`;
+                let mbody = await Handlebars.compile("{{message}}");
+                mbody = mbody({message: message});
+                let template = Handlebars.compile(message2);
+                $('#body').append(template({message: marked(mbody)}));
+                for(userid in window.users){
+                let user = window.users[userid];
+                const cipher = cryptico.encrypt(encodeURI(message),user.key,privatekey)
+                chatSocket.send(JSON.stringify({
+                     "message":JSON.stringify({
+                     "roomid": path[2],
+                     "sender": currentuser,
+                     "body": cipher.cipher,
+                     "recipient": user.user,
+                   })
+                }))
+                }
+            })
+        break;
+        case('login'):
+            $('#login').submit(function(){
+                let username = $('#username').val();
+                let password = $('#password').val();
+                let fingerprint = await SHA256(SHA256(username)+password);
+                //Store user encryption token
+                await localStorange.setItem('fingerprint',fingerprint);
+            })
+        break;
+        case('register'):
+            let username = $('#username').val();
+            let password = $('#password').val();
+            let fingerprint = await SHA256(SHA256(username)+password);
+            //Store user encryption token
+            await localStorange.setItem('fingerprint',fingerprint);
+            //Autofillout public key for storage
+            let key = await cryptico.generateRSAKey(fingerprint,1024);
+            key = await cryptico.publicKeyString(key);
+            $('#key').val(key);
+            return true;
         break;
     }
+})
+async function accept(id,pk){
+    let csrf = await Cookies.get('csrftoken');
+    const request = new Request(
+        '/accept',
+        {headers: {'X-CSRFToken': csrf}}
+    );
+    let res = await fetch(request, {
+        "method": "POST",
+        "body": JSON.stringify({
+            "id": id,
+            "pk": pk
+        })
+    })
+    let result = await res.json()
+    window.location.href = `/room/${id}`
+}
+function notify(message) {
+  if(document.hidden){
+  // Let's check if the browser supports notifications
+  if (!("Notification" in window)) {
+    alert("This browser does not support desktop notification");
+  }
+
+  // Let's check whether notification permissions have already been granted
+  else if (Notification.permission === "granted") {
+    // If it's okay let's create a notification
+    var notification = new Notification(message);
+  }
+
+  // Otherwise, we need to ask the user for permission
+  else if (Notification.permission !== "denied") {
+    Notification.requestPermission().then(function (permission) {
+      // If the user accepts, let's create a notification
+      if (permission === "granted") {
+        var notification = new Notification(message);
+      }
+    });
+  }
+
+  // At last, if the user has denied notifications, and you
+  // want to be respectful there is no need to bother them any more.
+}
 }
