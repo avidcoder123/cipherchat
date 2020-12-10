@@ -40,7 +40,7 @@ $('document').ready(async function() {
             })
         break;
         case 'room':
-            $('leave').click(async function(){
+            $('#leave').click(async function(){
                 //Make sure the user wants to leave
                 if (confirm("WARNING: If you leave this group, you cannot come back without an invitation.")){
                     //Send leave request to API
@@ -50,7 +50,7 @@ $('document').ready(async function() {
                     alert(result.message);
                 }
             })
-            $('invite').click(async function(){
+            $('#invite').click(async function(){
                 //Create array of invitees
                 let invites = await $('#invites').val().split(',');
                 //Clear the invite field
@@ -86,7 +86,7 @@ $('document').ready(async function() {
             );
             chatSocket.onmessage = async function(e){
                 let empty = await $('#emptymessage');
-                empty && empty.remove();
+                empty.length && empty.remove();
                 window.scrollTo(0, document.body.scrollHeight || document.documentElement.scrollHeight);
                 let data = await JSON.parse(e.data);
                 data = await JSON.parse(data.message);
