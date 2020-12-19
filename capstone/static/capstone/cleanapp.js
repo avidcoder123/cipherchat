@@ -16,7 +16,28 @@ $('document').ready(async function() {
                 let title = await $('#form_title').val();
                 let description = await $('#form_description').val();
                 let members = await $('#form_members').val();
+                const roomAES = SHA256(localStorage.getItem('fingerprint') + title + description)
                 members = members.split(',');
+                let roomKeys = [];
+                for (member of members) {
+                    //Get each member's public key
+                    const request = new Request(
+                        '/ajax/getkey',
+                        {headers:{'X-CSRFToken': csrf}}
+                      );
+                    const response = await fetch(request, {
+                        "method": "POST",
+                        "body": JSON.stringify({
+                            "user": member
+                        })
+                    });
+                    const result = await response.json().key;
+                    const indivKey = cryptico.encrypt(roomAES, result);
+                    roomKeys.push({
+                        "user": member,
+                        "key": indivKey.cipher
+                    })
+                }
                 const request = new Request(
                   '/new_room',
                   {headers:{'X-CSRFToken': csrf}}
@@ -26,7 +47,8 @@ $('document').ready(async function() {
                     "body": JSON.stringify({
                         "title": title,
                         "description": description,
-                        "members": members
+                        "members": members,
+                        "keys": roomKeys
                     })
                 });
                 let result = await response.json();
@@ -252,4 +274,13 @@ async function notify(message) {
   // At last, if the user has denied notifications, and you
   // want to be respectful there is no need to bother them any more.
 }
+}
+//Extract AES-CBC 32 byte key from a passphrase
+function extractAESKey(passphrase){
+    let digest = MD5(passphrase);
+    let key = new Array(32);
+    for(var i = 0; i<digest.length; i++){
+      key[i] = digest.charCodeAt(i);
+    }
+    return key;
 }

@@ -109,6 +109,9 @@ def new_room(request):
                     return JsonResponse({
                         "message": "One or more of the listed members do not exist."
                     })
+        for key in data.get("keys"):
+            thisuser = User.objects.get(username=key.user)
+            RoomKey.objects.create(userperm=thisuser,roomdata=room, token=key.key)
         if len(room.members.all()) == len(data.get("members"))+1:
             room.save()
             return JsonResponse({
