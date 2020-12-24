@@ -16,6 +16,7 @@ $('document').ready(async function() {
                 let title = await $('#form_title').val();
                 let description = await $('#form_description').val();
                 let members = await $('#form_members').val();
+                //Generate AES fingerprint for the room
                 const roomAES = SHA256(localStorage.getItem('fingerprint') + title + description)
                 members = members.split(',');
                 let roomKeys = [];
@@ -73,10 +74,38 @@ $('document').ready(async function() {
                 }
             })
             $('#invite').click(async function(){
+                //Get basic room data for key
+                let title = $('#title').val();
+                let description = $('#desc').val();
+                let fingerprint = localStorage.getItem('fingerprint');
+                //Generate AES key token
+                let roomAES = SHA256(fingerprint + title + description);
                 //Create array of invitees
                 let invites = await $('#invites').val().split(',');
                 //Clear the invite field
                 await $('#invites').val(null);
+                //Get each user's key
+                let roomKeys = [];
+                for (member of invites) {
+                    //Get each member's public key
+                    const request = new Request(
+                        '/ajax/getkey',
+                        {headers:{'X-CSRFToken': csrf}}
+                      );
+                    const response = await fetch(request, {
+                        "method": "POST",
+                        "body": JSON.stringify({
+                            "user": member
+                        })
+                    });
+                    const result = await response.json().key;
+                    const indivKey = cryptico.encrypt(roomAES, result);
+                    roomKeys.push({
+                        "user": member,
+                        "key": indivKey.cipher,
+                        "keys": roomKeys
+                    })
+                }
                 //Send invites to the API
                 const request = new Request(
                     '/invite',
@@ -277,10 +306,13 @@ async function notify(message) {
 }
 //Extract AES-CBC 32 byte key from a passphrase
 function extractAESKey(passphrase){
-    let digest = MD5(passphrase);
-    let key = new Array(32);
-    for(var i = 0; i<digest.length; i++){
-      key[i] = digest.charCodeAt(i);
+    //Creates 64-character long digest
+    let digest = SHA256(passphrase);
+    //Init 32-byte key array
+    let key = new Array();
+    //Parses each byte of hex into key array
+    for(i=0;i<digest.length;i+=2){
+          key.push(parseInt(digest[i]+digest[i+1],16))
     }
     return key;
 }

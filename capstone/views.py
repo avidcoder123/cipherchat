@@ -111,7 +111,7 @@ def new_room(request):
                     })
         for key in data.get("keys"):
             thisuser = User.objects.get(username=key.user)
-            RoomKey.objects.create(userperm=thisuser,roomdata=room, token=key.key)
+            RoomKey.objects.create(userperm=thisuser,roomdata=room, token=key.get('key'))
         if len(room.members.all()) == len(data.get("members"))+1:
             room.save()
             return JsonResponse({
@@ -197,6 +197,9 @@ def invite(request):
                 return JsonResponse({
                     "message": "Either one of the members do not exist or you have already sent an invite to them."
                 })
+        for key in data.get("keys"):
+            thisuser = User.objects.get(username=key.user)
+            RoomKey.objects.create(userperm=thisuser,roomdata=room, token=key.get('key'))
         return JsonResponse({
             "message": "Success!"
         })
