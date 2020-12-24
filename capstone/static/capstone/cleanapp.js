@@ -103,7 +103,6 @@ $('document').ready(async function() {
                     roomKeys.push({
                         "user": member,
                         "key": indivKey.cipher,
-                        "keys": roomKeys
                     })
                 }
                 //Send invites to the API
@@ -115,7 +114,8 @@ $('document').ready(async function() {
                     "method": "POST",
                     "body": JSON.stringify({
                         "room": id,
-                        "invites": invites
+                        "invites": invites,
+                        "keys": roomKeys
                     })
                 });
                 let result = await response.json();
