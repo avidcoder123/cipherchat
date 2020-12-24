@@ -110,6 +110,7 @@ def new_room(request):
                         "message": "One or more of the listed members do not exist."
                     })
         for key in data.get("keys"):
+            print(key)
             thisuser = User.objects.get(username=key.get("user"))
             RoomKey.objects.create(userperm=thisuser,roomdata=room, token=key.get('key'))
         if len(room.members.all()) == len(data.get("members"))+1:
