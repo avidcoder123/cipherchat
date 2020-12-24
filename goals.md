@@ -8,5 +8,5 @@ If a room is outdated, allow "update room" button
 --------
 Progress so far
 --------
-12/19/2020 Added logic for creating room keys on new room view, but has not been tested.
-Next: Test logic and recreate logic for invites
+12/24/2020 Finished room key logic
+Next: Test logic and implement chatting
