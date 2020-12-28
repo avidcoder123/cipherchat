@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 import json
 from django.db import IntegrityError
 from .models import User, Room, Invite, Message, PublicKey, Status, RoomKey
@@ -242,7 +243,7 @@ def chat(request, id):
         "messages": all_messages,
         "user_data": user_data
     })
-
+@csrf_exempt
 def ajax(request, slug):
     close_old_connections()
     if request.method == "POST":
