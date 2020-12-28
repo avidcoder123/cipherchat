@@ -34,10 +34,12 @@ $('document').ready(async function() {
                     });
                     const result = await response.json().key;
                     const indivKey = cryptico.encrypt(roomAES, result);
+                    console.log(indivKey);
                     roomKeys.push({
                         "user": member,
                         "key": indivKey.cipher
                     })
+                    console.log(roomKeys);
                 }
                 const request = new Request(
                   '/new_room',
