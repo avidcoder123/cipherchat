@@ -104,7 +104,10 @@ def new_room(request):
                 try:
                     member = User.objects.get(username = person)
                     invite = Invite.objects.create(room = room, recipient = member)
-                    invite.save()
+                    if room.host == member:
+                        invite.delete()
+                    else:
+                        invite.save()
                 except:
                     room.delete()
                     return JsonResponse({

@@ -254,7 +254,7 @@ $('document').ready(async function() {
             let password = $('#password').val();
             fingerprint = await SHA256(SHA256(username)+password);
             //Store user encryption token
-            await localStorange.setItem('fingerprint',fingerprint);
+            await localStorage.setItem('fingerprint',fingerprint);
             //Autofillout public key for storage
             let key = await cryptico.generateRSAKey(fingerprint,1024);
             key = await cryptico.publicKeyString(key);
