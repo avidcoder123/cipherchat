@@ -33,6 +33,7 @@ $('document').ready(async function() {
                         })
                     });
                     const result = await response.json().key;
+                    console.log(result);
                     const indivKey = cryptico.encrypt(roomAES, result);
                     console.log(indivKey);
                     roomKeys.push({
