@@ -19,6 +19,9 @@ $('document').ready(async function() {
                 //Generate AES fingerprint for the room
                 const roomAES = SHA256(localStorage.getItem('fingerprint') + title + description)
                 members = members.split(',');
+                if(!members.includes(window.currentuser)){
+                    members.push(window.currentuser);
+                }
                 let roomKeys = [];
                 for (member of members) {
                     //Get each member's public key
@@ -37,7 +40,6 @@ $('document').ready(async function() {
                         "user": member,
                         "key": indivKey.cipher
                     })
-                    console.log(roomKeys);
                 }
                 const request = new Request(
                   '/new_room',
