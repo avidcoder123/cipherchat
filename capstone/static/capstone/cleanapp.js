@@ -23,8 +23,7 @@ $('document').ready(async function() {
                 for (member of members) {
                     //Get each member's public key
                     const request = new Request(
-                        '/ajax/getkey',
-                        {headers:{'X-CSRFToken': csrf}}
+                        '/ajax/getkey'
                       );
                     const response = await fetch(request, {
                         "method": "POST",
@@ -32,10 +31,8 @@ $('document').ready(async function() {
                             "user": member
                         })
                     });
-                    const result = await response.json().key;
-                    console.log(result);
-                    const indivKey = cryptico.encrypt(roomAES, result);
-                    console.log(indivKey);
+                    const result = await response.json();
+                    const indivKey = cryptico.encrypt(roomAES, result.key);
                     roomKeys.push({
                         "user": member,
                         "key": indivKey.cipher
